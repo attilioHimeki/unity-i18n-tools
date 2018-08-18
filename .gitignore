@@ -1,0 +1,8 @@
+
+*.csproj
+.vscode/settings.json
+Assets/TextMesh Pro
+Library
+Temp
+Packages
+ProjectSettings
