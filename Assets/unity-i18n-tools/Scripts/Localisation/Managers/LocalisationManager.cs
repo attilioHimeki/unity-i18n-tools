@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 
+[DisallowMultipleComponent]
 public class LocalisationManager : MonoBehaviour 
 {
 
@@ -9,14 +10,26 @@ public class LocalisationManager : MonoBehaviour
 
 	private const string PLAYER_PREFS_LANG_ID = "currentLang";
 
+	[Header("Options")]
+	[Tooltip("Automatically initialise the manager at startup.")]
 	[SerializeField] private bool initialiseOnAwake = true;
 
+	[Tooltip("Reload selected language using PlayerPrefs.")]
+	[SerializeField] private bool storeLanguageOnUserPrefs = true;
+
+	[Tooltip("Defines the preferred behaviour in case a key is missing in the language file.")]
+	[SerializeField] private MissingKeyFallback missingKeyFallback;
+
+	[Header("Fonts")]
+	[Tooltip("Default Font to use for regular text fields.")]
 	[SerializeField] private Font defaultFont;
+
+	[Tooltip("Default Font to use for TextMeshPro text fields.")]
 	[SerializeField] private TMP_FontAsset defaultTextMeshFont;
 
+	[Header("Languges")]
+	[Tooltip("List of languages to be supported in the game.")]
 	[SerializeField] private LanguageEntry[] supportedLanguages;
-	
-	[SerializeField] private MissingKeyFallback missingKeyFallback;
 
 	private LanguageEntry currentLanguage;
 	private LanguageEntry defaultLanguage;
@@ -54,7 +67,10 @@ public class LocalisationManager : MonoBehaviour
 				languageEntry.initialise();
 			}
 
-			loadLanguageFromPlayerPrefs();
+			if(storeLanguageOnUserPrefs)
+			{
+				loadLanguageFromPlayerPrefs();
+			}
 
 			initialised = true;
 		}
@@ -71,6 +87,12 @@ public class LocalisationManager : MonoBehaviour
 		{
 			setLanguageFromSystemLanguage();
 		}
+	}
+
+	public void saveLanguageOnPlayerPrefs(LanguageEntry entry)
+	{
+		var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
+		PlayerPrefs.SetString(PLAYER_PREFS_LANG_ID, isoCode);
 	}
 
 
@@ -106,8 +128,10 @@ public class LocalisationManager : MonoBehaviour
 
 		currentLanguage = entry;
 
-		var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
-		PlayerPrefs.SetString(PLAYER_PREFS_LANG_ID, isoCode);
+		if(storeLanguageOnUserPrefs)
+		{
+			saveLanguageOnPlayerPrefs(entry);
+		}
 
 		if(OnLanguageChanged != null)
 			OnLanguageChanged();
