@@ -2,6 +2,7 @@
 using System.Collections;
 using TMPro;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(TextMeshProUGUI))]
 public class TextMeshProFieldLocalisator : MonoBehaviour 
 {

@@ -27,7 +27,7 @@ public class LocalisationManager : MonoBehaviour
 	[Tooltip("Default Font to use for TextMeshPro text fields.")]
 	[SerializeField] private TMP_FontAsset defaultTextMeshFont;
 
-	[Header("Languges")]
+	[Header("Languages")]
 	[Tooltip("List of languages to be supported in the game.")]
 	[SerializeField] private LanguageEntry[] supportedLanguages;
 

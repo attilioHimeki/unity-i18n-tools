@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
+[DisallowMultipleComponent]
 [RequireComponent(typeof(Text))]
 public class TextFieldLocalisator : MonoBehaviour 
 {
