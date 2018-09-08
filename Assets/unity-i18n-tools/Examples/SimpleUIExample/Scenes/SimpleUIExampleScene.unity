@@ -371,6 +371,95 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 398315019}
+--- !u!1001 &630894262
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+      propertyPath: m_RootOrder
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: defaultFont
+      value: 
+      objectReference: {fileID: 12800000, guid: a30f933bed2f6504bae572c0ef6aaeb7,
+        type: 3}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: defaultTextMeshFont
+      value: 
+      objectReference: {fileID: 11400000, guid: 715b80e429c437e40867928a4e1fc975,
+        type: 2}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.data[0].language
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.data[0].translationCSVFile
+      value: 
+      objectReference: {fileID: 4900000, guid: 610e78a1259f03e4baa38af9c3f548e6, type: 3}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.data[1].translationCSVFile
+      value: 
+      objectReference: {fileID: 4900000, guid: 30dea69b800a4fc47a6086f345591377, type: 3}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.data[1].language
+      value: 21
+      objectReference: {fileID: 0}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.data[2].language
+      value: 28
+      objectReference: {fileID: 0}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: supportedLanguages.Array.data[2].translationCSVFile
+      value: 
+      objectReference: {fileID: 4900000, guid: 5997c26c86df1fc4bbbe548e60159297, type: 3}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1 &768444885
 GameObject:
   m_ObjectHideFlags: 0
@@ -890,71 +979,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5b1dfb3e28a6cd4087bc37b16091371, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1867227810
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1867227812}
-  - component: {fileID: 1867227811}
-  m_Layer: 0
-  m_Name: LocalisationManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1867227811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1867227810}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30418d6e2bb2fff44aa378ceebd7c9dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  initialiseOnAwake: 1
-  storeLanguageOnUserPrefs: 1
-  missingKeyFallback: 1
-  defaultFont: {fileID: 12800000, guid: 323ac1ea6ff04144f9f5b613bfbc5597, type: 3}
-  defaultTextMeshFont: {fileID: 11400000, guid: 09641b029dfa78843902b548a9de7553,
-    type: 2}
-  supportedLanguages:
-  - language: 10
-    translationCSVFile: {fileID: 4900000, guid: 610e78a1259f03e4baa38af9c3f548e6,
-      type: 3}
-    customFont: {fileID: 12800000, guid: ece7dc758aa1e1f43888284fcccaf1c2, type: 3}
-    customTextMeshFont: {fileID: 11400000, guid: d62a573c923f5cb47b8ff65261033b90,
-      type: 2}
-  - language: 21
-    translationCSVFile: {fileID: 4900000, guid: 30dea69b800a4fc47a6086f345591377,
-      type: 3}
-    customFont: {fileID: 12800000, guid: a30f933bed2f6504bae572c0ef6aaeb7, type: 3}
-    customTextMeshFont: {fileID: 11400000, guid: 163292f6f226d954593d45b079f8aae0,
-      type: 2}
-  - language: 28
-    translationCSVFile: {fileID: 4900000, guid: 5997c26c86df1fc4bbbe548e60159297,
-      type: 3}
-    customFont: {fileID: 12800000, guid: a30f933bed2f6504bae572c0ef6aaeb7, type: 3}
-    customTextMeshFont: {fileID: 11400000, guid: 163292f6f226d954593d45b079f8aae0,
-      type: 2}
---- !u!4 &1867227812
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1867227810}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2038478435
 GameObject:
   m_ObjectHideFlags: 0
