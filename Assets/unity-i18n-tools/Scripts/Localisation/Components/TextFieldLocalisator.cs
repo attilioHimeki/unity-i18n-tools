@@ -23,8 +23,7 @@ public class TextFieldLocalisator : MonoBehaviour
 		
 		LocalisationManager.instance.OnLanguageChanged += onLanguageChanged;
 		
-		refreshText();
-		refreshFont();
+		refresh();
 	}
 
 	void OnDisable()

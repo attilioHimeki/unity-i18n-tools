@@ -22,7 +22,7 @@ public class TextMeshProFieldLocalisator : MonoBehaviour
 		meshTextField = GetComponent<TextMeshProUGUI>();
 		LocalisationManager.instance.OnLanguageChanged += onLanguageChanged;
 		
-		refreshText();
+		refresh();
 	}
 
 	void OnDisable()
