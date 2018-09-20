@@ -31,6 +31,10 @@ public class LocalisationManager : MonoBehaviour
 	[Tooltip("List of languages to be supported in the game.")]
 	[SerializeField] private LanguageEntry[] supportedLanguages;
 
+	[Header("Debug")]
+	[Tooltip("Print Debug log messages in the console - Disable for release builds")]
+	[SerializeField] private bool showLogMessages = false;
+
 	private LanguageEntry currentLanguage;
 	private LanguageEntry defaultLanguage;
 
@@ -81,6 +85,7 @@ public class LocalisationManager : MonoBehaviour
 		if(PlayerPrefs.HasKey(PLAYER_PREFS_LANG_ID))
 		{
 			var lang = PlayerPrefs.GetString(PLAYER_PREFS_LANG_ID);
+			printDebugLog("Loading language from Player Prefs: " + lang);
 			setLanguage(lang);
 		}
 		else
@@ -93,6 +98,8 @@ public class LocalisationManager : MonoBehaviour
 	{
 		var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
 		PlayerPrefs.SetString(PLAYER_PREFS_LANG_ID, isoCode);
+
+		printDebugLog("Language saved in Player Prefs: " + isoCode);
 	}
 
 
@@ -124,7 +131,7 @@ public class LocalisationManager : MonoBehaviour
 
 	public void setLanguage(LanguageEntry entry)
 	{
-		print("Settings language to " + entry.getLanguage());
+		printDebugLog("Settings language to " + entry.getLanguage());
 
 		currentLanguage = entry;
 
@@ -163,6 +170,8 @@ public class LocalisationManager : MonoBehaviour
 		}
 		else
 		{
+			printDebugLog("Can't find string for key: " + key);
+			
 			switch(missingKeyFallback)
 			{
 				case MissingKeyFallback.Empty:
@@ -220,5 +229,13 @@ public class LocalisationManager : MonoBehaviour
 	public void clearLanguageChangedListeners()
 	{
 		OnLanguageChanged = null;
+	}
+
+	private void printDebugLog(string message)
+	{
+		if(showLogMessages)
+		{
+			Debug.Log(message);
+		}
 	}
 }
