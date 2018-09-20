@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using System.Collections.Generic;
+﻿using System;
+using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class LocalisationManager : MonoBehaviour 
@@ -8,13 +9,11 @@ public class LocalisationManager : MonoBehaviour
 
 	public static LocalisationManager instance;
 
-	private const string PLAYER_PREFS_LANG_ID = "currentLang";
-
 	[Header("Options")]
 	[Tooltip("Automatically initialise the manager at startup.")]
 	[SerializeField] private bool initialiseOnAwake = true;
 
-	[Tooltip("Reload selected language using PlayerPrefs.")]
+	[Tooltip("Reload selected language from saved data.")]
 	[SerializeField] private bool storeLanguageOnUserPrefs = true;
 
 	[Tooltip("Defines the preferred behaviour in case a key is missing in the language file.")]
@@ -41,6 +40,22 @@ public class LocalisationManager : MonoBehaviour
 	public delegate void LanguageChangedHandler();
     public event LanguageChangedHandler OnLanguageChanged;
 
+	/// <summary>
+	/// Handler called when trying to retrieve the user saved language. 
+	/// Uses PlayerPrefs by default, but can be overridden using overrideStoredLanguageHandlers.
+	/// </summary>
+	private Func<string> retrieveSavedUserLanguageHandler;
+
+	/// <summary>
+	/// Handler called when storing the user saved language. 
+	/// Uses PlayerPrefs by default, but can be overridden using overrideStoredLanguageHandlers.
+	/// </summary>
+	private Action<string> storeSavedUserLanguageHandler;
+
+	/// <summary>
+	/// Is the manager initialised and ready to use?
+	/// Can be false if initialiseOnAwake, in that case the manager will need to be initialised manually.
+	/// </summary>
 	private bool initialised = false;
 
 	void Awake()
@@ -65,6 +80,9 @@ public class LocalisationManager : MonoBehaviour
 		{
 			currentLanguage = supportedLanguages[0];
 			defaultLanguage = supportedLanguages[0];
+
+			retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
+			storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
 			
 			foreach(var languageEntry in supportedLanguages)
 			{
@@ -73,33 +91,34 @@ public class LocalisationManager : MonoBehaviour
 
 			if(storeLanguageOnUserPrefs)
 			{
-				loadLanguageFromPlayerPrefs();
+				loadSavedUserLang();
 			}
 
 			initialised = true;
 		}
     }
 
-	public void loadLanguageFromPlayerPrefs()
+	public void loadSavedUserLang()
 	{
-		if(PlayerPrefs.HasKey(PLAYER_PREFS_LANG_ID))
+		if(retrieveSavedUserLanguageHandler != null)
 		{
-			var lang = PlayerPrefs.GetString(PLAYER_PREFS_LANG_ID);
-			printDebugLog("Loading language from Player Prefs: " + lang);
-			setLanguage(lang);
+			var languageCode = retrieveSavedUserLanguageHandler.Invoke();
+
+			if(!string.IsNullOrEmpty(languageCode))
+			{
+				printDebugLog("Loading saved language from User Prefs: " + languageCode);
+
+				setLanguage(languageCode);
+			}
+			else
+			{
+				printDebugLog("No Saved user language found");
+			}
 		}
 		else
 		{
-			setLanguageFromSystemLanguage();
+			printDebugLog("No Saved user language function assigned!");
 		}
-	}
-
-	public void saveLanguageOnPlayerPrefs(LanguageEntry entry)
-	{
-		var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
-		PlayerPrefs.SetString(PLAYER_PREFS_LANG_ID, isoCode);
-
-		printDebugLog("Language saved in Player Prefs: " + isoCode);
 	}
 
 
@@ -137,7 +156,12 @@ public class LocalisationManager : MonoBehaviour
 
 		if(storeLanguageOnUserPrefs)
 		{
-			saveLanguageOnPlayerPrefs(entry);
+			if(storeSavedUserLanguageHandler != null)
+			{
+				var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
+				printDebugLog("Storing saved language in User Prefs: " + isoCode);
+				storeSavedUserLanguageHandler.Invoke(isoCode);
+			}
 		}
 
 		if(OnLanguageChanged != null)
@@ -224,6 +248,18 @@ public class LocalisationManager : MonoBehaviour
 		SystemLanguage systemLang = Application.systemLanguage;
 
 		setLanguage(systemLang);	
+	}
+
+	public void overrideStoredLanguageHandlers(Func<string> retrieveHandler, Action<string> storeHandler)
+	{
+		retrieveSavedUserLanguageHandler = retrieveHandler;
+		storeSavedUserLanguageHandler = storeHandler;
+	}
+
+	public void resetDefaultStoredLanguageHandlers()
+	{
+		retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
+		storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
 	}
 
 	public void clearLanguageChangedListeners()

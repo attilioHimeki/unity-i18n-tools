@@ -611,6 +611,11 @@ Prefab:
       propertyPath: supportedLanguages.Array.data[2].translationCSVFile
       value: 
       objectReference: {fileID: 4900000, guid: 5997c26c86df1fc4bbbe548e60159297, type: 3}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 2}
+      propertyPath: showLogMessages
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 2}
   m_IsPrefabAsset: 0
