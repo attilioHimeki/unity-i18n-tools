@@ -6,10 +6,16 @@ using TMPro;
 [System.Serializable]
 public class LanguageEntry  
 {
+	[Tooltip("The related language name.")]
 	[SerializeField] private SystemLanguage language;
+
+	[Tooltip("The related translation CSV file.")]
 	[SerializeField] private TextAsset translationCSVFile;
-	
+
+	[Tooltip("Optional custom Font to replace the default font in the manager.")]
 	[SerializeField] private Font customFont;
+
+	[Tooltip("Optional TextMeshPro custom Font to replace the default font in the manager.")]
 	[SerializeField] private TMP_FontAsset customTextMeshFont;
 
 	private Dictionary<string, string> translationDict;
