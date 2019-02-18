@@ -1,4 +1,5 @@
 
+using System;
 using UnityEngine;
 public static class PlayerPrefsStoredLanguageHandlers
 {
@@ -12,7 +13,7 @@ public static class PlayerPrefsStoredLanguageHandlers
 			return PlayerPrefs.GetString(PLAYER_PREFS_LANG_ID);
 		}
 		
-		return StringUtils.EMPTY_STRING;
+		return String.Empty;
 	}
 
 	public static void saveLanguageOnPlayerPrefs(string langIsoCode)

@@ -199,7 +199,7 @@ public class LocalisationManager : MonoBehaviour
 			switch(missingKeyFallback)
 			{
 				case MissingKeyFallback.Empty:
-					return StringUtils.EMPTY_STRING;
+					return String.Empty;
 				case MissingKeyFallback.ShowKey:
 					return key;
 				case MissingKeyFallback.ShowErrorString:
@@ -209,7 +209,7 @@ public class LocalisationManager : MonoBehaviour
 			}
 		}
 
-		return StringUtils.EMPTY_STRING;
+		return String.Empty;
     }
 
     public int getLanguagesAmount()
