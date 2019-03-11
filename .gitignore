@@ -1,9 +1,10 @@
-
 *.csproj
 .vscode/settings.json
 Assets/TextMesh Pro
 Library
+Logs
 Temp
 Packages
 ProjectSettings
 unity-i18n-tools.sln
+obj
