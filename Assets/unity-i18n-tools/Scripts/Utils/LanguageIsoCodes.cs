@@ -10,6 +10,7 @@
 	public const string ZH = "zh";
 	public const string ZH_SI = "zh-Hans";
 	public const string ZH_TR = "zh-Hant";
+	public const string ZH_TW = "zh-TW"; //Chinese language as used in Taiwan
 	public const string CS = "cs";
 	public const string DA = "da";
 	public const string NL = "nl";

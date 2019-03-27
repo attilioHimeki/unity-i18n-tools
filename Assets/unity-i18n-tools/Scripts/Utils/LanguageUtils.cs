@@ -72,7 +72,7 @@ public static class LanguageUtils
 			case LanguageIsoCode.CA: return SystemLanguage.Catalan;
 			case LanguageIsoCode.ZH: return SystemLanguage.Chinese;
 			case LanguageIsoCode.ZH_SI: return SystemLanguage.ChineseSimplified;
-			case LanguageIsoCode.ZH_TR: return SystemLanguage.ChineseTraditional;
+			case LanguageIsoCode.ZH_TR: case LanguageIsoCode.ZH_TW: return SystemLanguage.ChineseTraditional;
 			case LanguageIsoCode.CS: return SystemLanguage.Czech;
 			case LanguageIsoCode.DA: return SystemLanguage.Danish;
 			case LanguageIsoCode.NL: return SystemLanguage.Dutch;
