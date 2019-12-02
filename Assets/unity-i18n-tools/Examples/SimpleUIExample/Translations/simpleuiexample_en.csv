@@ -4,3 +4,4 @@ key_resume,Resume
 key_restart,Restart
 key_episode,Episode
 key_level,Level
+key_livesleft,Lives Left: {0}

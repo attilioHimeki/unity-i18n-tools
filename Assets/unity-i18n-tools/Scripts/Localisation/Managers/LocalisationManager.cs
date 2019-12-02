@@ -1,7 +1,6 @@
 ﻿using System;
 using UnityEngine;
 using TMPro;
-using System.Collections.Generic;
 
 [DisallowMultipleComponent]
 public class LocalisationManager : MonoBehaviour 
@@ -211,6 +210,18 @@ public class LocalisationManager : MonoBehaviour
 
 		return String.Empty;
     }
+
+	public string getStringForKey(string key, params object[] args)
+	{
+		var s = getStringForKey(key);
+		
+		if(args.Length > 0)
+		{
+			s = string.Format(s, args);
+		}
+
+		return s;
+	}
 
     public int getLanguagesAmount()
     {

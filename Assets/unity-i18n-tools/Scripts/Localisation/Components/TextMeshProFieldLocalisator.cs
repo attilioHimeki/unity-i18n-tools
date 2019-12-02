@@ -1,67 +1,39 @@
 ﻿using UnityEngine;
-using System.Collections;
 using TMPro;
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(TextMeshProUGUI))]
-public class TextMeshProFieldLocalisator : MonoBehaviour 
+public class TextMeshProFieldLocalisator : BaseTextFieldLocalisator 
 {
 
-	[SerializeField] private string textKey;
+	[Header("Fonts")]
 	[SerializeField] private TMP_FontAsset overrideFont;
 
 	private TextMeshProUGUI meshTextField;
 
-	private void onLanguageChanged()
-	{
-		refresh();
-	}
-
-	void OnEnable () 
+	void Awake()
 	{
 		meshTextField = GetComponent<TextMeshProUGUI>();
-		LocalisationManager.instance.OnLanguageChanged += onLanguageChanged;
-		
-		refresh();
 	}
 
-	void OnDisable()
-	{
-		LocalisationManager.instance.OnLanguageChanged -= onLanguageChanged;
-	}
-
-	void OnDestroy()
-	{
-		LocalisationManager.instance.OnLanguageChanged -= onLanguageChanged;
-	}
-
-	public void refresh()
-	{
-		refreshText();
-		refreshFont();
-	}
-
-	public void refreshText()
+	public override void refreshText()
 	{
 		if(!string.IsNullOrEmpty(textKey))
 		{
-			var s = LocalisationManager.instance.getStringForKey(textKey);
+			var s = LocalisationManager.instance.getStringForKey(textKey, parameters);
 			meshTextField.text = s;
 		}
 	}
 
-	public void refreshFont()
+	public override void refreshFont()
 	{
-		if(overrideFont != null)
+		var refreshedFont = (overrideFont != null) ? 
+							overrideFont : 
+							LocalisationManager.instance.getTextMeshFontPerCurrentLanguage();
+
+		if(refreshedFont && meshTextField.font != refreshedFont)
 		{
 			meshTextField.font = overrideFont;
-		}
-		else
-		{
-			var currentFont = LocalisationManager.instance.getTextMeshFontPerCurrentLanguage();
-
-			if(currentFont != null)
-				meshTextField.font = currentFont;	
 		}
 	}
 
