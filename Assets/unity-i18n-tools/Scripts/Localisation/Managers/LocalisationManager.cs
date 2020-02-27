@@ -77,23 +77,30 @@ public class LocalisationManager : MonoBehaviour
     {
         if (!initialised)
         {
-            currentLanguage = supportedLanguages[0];
-            defaultLanguage = supportedLanguages[0];
-
-            retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
-            storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
-
-            foreach (var languageEntry in supportedLanguages)
+            if (supportedLanguages.Length > 0)
             {
-                languageEntry.initialise();
-            }
+                currentLanguage = supportedLanguages[0];
+                defaultLanguage = supportedLanguages[0];
 
-            if (storeLanguageOnUserPrefs)
+                retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
+                storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
+
+                foreach (var languageEntry in supportedLanguages)
+                {
+                    languageEntry.initialise();
+                }
+
+                if (storeLanguageOnUserPrefs)
+                {
+                    loadSavedUserLang();
+                }
+
+                initialised = true;
+            }
+            else
             {
-                loadSavedUserLang();
+                Debug.LogError("No Languages defined in the Localisation Manager, make sure at least one language is supported. Skipping initialisation.");
             }
-
-            initialised = true;
         }
     }
 
