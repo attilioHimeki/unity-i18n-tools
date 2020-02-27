@@ -3,286 +3,286 @@ using UnityEngine;
 using TMPro;
 
 [DisallowMultipleComponent]
-public class LocalisationManager : MonoBehaviour 
+public class LocalisationManager : MonoBehaviour
 {
 
-	public static LocalisationManager instance;
+    public static LocalisationManager instance;
 
-	[Header("Options")]
-	[Tooltip("Automatically initialise the manager at startup.")]
-	[SerializeField] private bool initialiseOnAwake = true;
+    [Header("Options")]
+    [Tooltip("Automatically initialise the manager at startup.")]
+    [SerializeField] private bool initialiseOnAwake = true;
 
-	[Tooltip("Reload selected language from saved data.")]
-	[SerializeField] private bool storeLanguageOnUserPrefs = true;
+    [Tooltip("Reload selected language from saved data.")]
+    [SerializeField] private bool storeLanguageOnUserPrefs = true;
 
-	[Tooltip("Defines the preferred behaviour in case a key is missing in the language file.")]
-	[SerializeField] private MissingKeyFallback missingKeyFallback;
+    [Tooltip("Defines the preferred behaviour in case a key is missing in the language file.")]
+    [SerializeField] private MissingKeyFallback missingKeyFallback;
 
-	[Header("Fonts")]
-	[Tooltip("Default Font to use for regular text fields.")]
-	[SerializeField] private Font defaultFont;
+    [Header("Fonts")]
+    [Tooltip("Default Font to use for regular text fields.")]
+    [SerializeField] private Font defaultFont;
 
-	[Tooltip("Default Font to use for TextMeshPro text fields.")]
-	[SerializeField] private TMP_FontAsset defaultTextMeshFont;
+    [Tooltip("Default Font to use for TextMeshPro text fields.")]
+    [SerializeField] private TMP_FontAsset defaultTextMeshFont;
 
-	[Header("Languages")]
-	[Tooltip("List of languages to be supported in the game.")]
-	[SerializeField] private LanguageEntry[] supportedLanguages;
+    [Header("Languages")]
+    [Tooltip("List of languages to be supported in the game.")]
+    [SerializeField] private LanguageEntry[] supportedLanguages;
 
-	[Header("Debug")]
-	[Tooltip("Print Debug log messages in the console - Disable for release builds")]
-	[SerializeField] private bool showLogMessages = false;
+    [Header("Debug")]
+    [Tooltip("Print Debug log messages in the console - Disable for release builds")]
+    [SerializeField] private bool showLogMessages = false;
 
-	private LanguageEntry currentLanguage;
-	private LanguageEntry defaultLanguage;
+    private LanguageEntry currentLanguage;
+    private LanguageEntry defaultLanguage;
 
-	public delegate void LanguageChangedHandler();
+    public delegate void LanguageChangedHandler();
     public event LanguageChangedHandler OnLanguageChanged;
 
-	/// <summary>
-	/// Handler called when trying to retrieve the user saved language. 
-	/// Uses PlayerPrefs by default, but can be overridden using overrideStoredLanguageHandlers.
-	/// </summary>
-	private Func<string> retrieveSavedUserLanguageHandler;
+    /// <summary>
+    /// Handler called when trying to retrieve the user saved language. 
+    /// Uses PlayerPrefs by default, but can be overridden using overrideStoredLanguageHandlers.
+    /// </summary>
+    private Func<string> retrieveSavedUserLanguageHandler;
 
-	/// <summary>
-	/// Handler called when storing the user saved language. 
-	/// Uses PlayerPrefs by default, but can be overridden using overrideStoredLanguageHandlers.
-	/// </summary>
-	private Action<string> storeSavedUserLanguageHandler;
+    /// <summary>
+    /// Handler called when storing the user saved language. 
+    /// Uses PlayerPrefs by default, but can be overridden using overrideStoredLanguageHandlers.
+    /// </summary>
+    private Action<string> storeSavedUserLanguageHandler;
 
-	/// <summary>
-	/// Is the manager initialised and ready to use?
-	/// Can be false if initialiseOnAwake, in that case the manager will need to be initialised manually.
-	/// </summary>
-	private bool initialised = false;
+    /// <summary>
+    /// Is the manager initialised and ready to use?
+    /// Can be false if initialiseOnAwake, in that case the manager will need to be initialised manually.
+    /// </summary>
+    private bool initialised = false;
 
-	void Awake()
+    void Awake()
     {
-		if (instance == null)
+        if (instance == null)
         {
             instance = this;
-			DontDestroyOnLoad(gameObject);
+            DontDestroyOnLoad(gameObject);
 
-			if(initialiseOnAwake)
-				initialise();
+            if (initialiseOnAwake)
+                initialise();
         }
         else if (instance != this)
         {
-            Destroy(gameObject);    
+            Destroy(gameObject);
         }
     }
 
     public void initialise()
     {
-		if(!initialised)
-		{
-			currentLanguage = supportedLanguages[0];
-			defaultLanguage = supportedLanguages[0];
+        if (!initialised)
+        {
+            currentLanguage = supportedLanguages[0];
+            defaultLanguage = supportedLanguages[0];
 
-			retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
-			storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
-			
-			foreach(var languageEntry in supportedLanguages)
-			{
-				languageEntry.initialise();
-			}
+            retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
+            storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
 
-			if(storeLanguageOnUserPrefs)
-			{
-				loadSavedUserLang();
-			}
+            foreach (var languageEntry in supportedLanguages)
+            {
+                languageEntry.initialise();
+            }
 
-			initialised = true;
-		}
+            if (storeLanguageOnUserPrefs)
+            {
+                loadSavedUserLang();
+            }
+
+            initialised = true;
+        }
     }
 
-	public void loadSavedUserLang()
-	{
-		if(retrieveSavedUserLanguageHandler != null)
-		{
-			var languageCode = retrieveSavedUserLanguageHandler.Invoke();
-
-			if(!string.IsNullOrEmpty(languageCode))
-			{
-				printDebugLog("Loading saved language from User Prefs: " + languageCode);
-
-				setLanguage(languageCode);
-			}
-			else
-			{
-				printDebugLog("No Saved user language found");
-			}
-		}
-		else
-		{
-			printDebugLog("No Saved user language function assigned!");
-		}
-	}
-
-
-	public void setLanguage(string isoLang)
+    public void loadSavedUserLang()
     {
-		setLanguage(LanguageUtils.getLanguageFromISOCode(isoLang));
+        if (retrieveSavedUserLanguageHandler != null)
+        {
+            var languageCode = retrieveSavedUserLanguageHandler.Invoke();
+
+            if (!string.IsNullOrEmpty(languageCode))
+            {
+                printDebugLog("Loading saved language from User Prefs: " + languageCode);
+
+                setLanguage(languageCode);
+            }
+            else
+            {
+                printDebugLog("No Saved user language found");
+            }
+        }
+        else
+        {
+            printDebugLog("No Saved user language function assigned!");
+        }
+    }
+
+
+    public void setLanguage(string isoLang)
+    {
+        setLanguage(LanguageUtils.getLanguageFromISOCode(isoLang));
     }
 
     public void setLanguage(SystemLanguage lang)
     {
-    	for(int i = 0; i < supportedLanguages.Length; i++)
-    	{
-    		if(supportedLanguages[i].getLanguage() == lang)
-    		{	
-    			setLanguage(supportedLanguages[i]);
+        for (int i = 0; i < supportedLanguages.Length; i++)
+        {
+            if (supportedLanguages[i].getLanguage() == lang)
+            {
+                setLanguage(supportedLanguages[i]);
 
-				break;
-    		}
-    	}
+                break;
+            }
+        }
     }
 
-	public void setLanguage(int index)
-	{
-		if(index >= 0 && index < supportedLanguages.Length)
-		{
-			setLanguage(supportedLanguages[index]);
-		}
-	}
+    public void setLanguage(int index)
+    {
+        if (index >= 0 && index < supportedLanguages.Length)
+        {
+            setLanguage(supportedLanguages[index]);
+        }
+    }
 
-	public void setLanguage(LanguageEntry entry)
-	{
-		printDebugLog("Settings language to " + entry.getLanguage());
+    public void setLanguage(LanguageEntry entry)
+    {
+        printDebugLog("Settings language to " + entry.getLanguage());
 
-		currentLanguage = entry;
+        currentLanguage = entry;
 
-		if(storeLanguageOnUserPrefs)
-		{
-			if(storeSavedUserLanguageHandler != null)
-			{
-				var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
-				printDebugLog("Storing saved language in User Prefs: " + isoCode);
-				storeSavedUserLanguageHandler.Invoke(isoCode);
-			}
-		}
+        if (storeLanguageOnUserPrefs)
+        {
+            if (storeSavedUserLanguageHandler != null)
+            {
+                var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
+                printDebugLog("Storing saved language in User Prefs: " + isoCode);
+                storeSavedUserLanguageHandler.Invoke(isoCode);
+            }
+        }
 
-		if(OnLanguageChanged != null)
-			OnLanguageChanged();
-	}
+        if (OnLanguageChanged != null)
+            OnLanguageChanged();
+    }
 
-	public bool supportsLanguage(SystemLanguage language)
-	{
-		for(int i = 0; i < supportedLanguages.Length; i++)
-		{
-			if(supportedLanguages[i].getLanguage() == language)
-    		{	
-    			return true;
-    		}
-		}
+    public bool supportsLanguage(SystemLanguage language)
+    {
+        for (int i = 0; i < supportedLanguages.Length; i++)
+        {
+            if (supportedLanguages[i].getLanguage() == language)
+            {
+                return true;
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 
     public LanguageEntry getCurrentLanguage()
     {
-    	return currentLanguage;	
+        return currentLanguage;
     }
 
-	public string getStringForKey(string key)
+    public string getStringForKey(string key)
     {
-		if(currentLanguage.hasStringForKey(key))
-		{
-    		return currentLanguage.getStringForKey(key);
-		}
-		else
-		{
-			printDebugLog("Can't find string for key: " + key);
-			
-			switch(missingKeyFallback)
-			{
-				case MissingKeyFallback.Empty:
-					return String.Empty;
-				case MissingKeyFallback.ShowKey:
-					return key;
-				case MissingKeyFallback.ShowErrorString:
-					return "Can't find string for key: " + key;
-				case MissingKeyFallback.TryShowingDefaultLangString:
-					return defaultLanguage.getStringForKey(key);
-			}
-		}
+        if (currentLanguage.hasStringForKey(key))
+        {
+            return currentLanguage.getStringForKey(key);
+        }
+        else
+        {
+            printDebugLog("Can't find string for key: " + key);
 
-		return String.Empty;
+            switch (missingKeyFallback)
+            {
+                case MissingKeyFallback.Empty:
+                    return String.Empty;
+                case MissingKeyFallback.ShowKey:
+                    return key;
+                case MissingKeyFallback.ShowErrorString:
+                    return "Can't find string for key: " + key;
+                case MissingKeyFallback.TryShowingDefaultLangString:
+                    return defaultLanguage.getStringForKey(key);
+            }
+        }
+
+        return String.Empty;
     }
 
-	public string getStringForKey(string key, params object[] args)
-	{
-		var s = getStringForKey(key);
-		
-		if(args.Length > 0)
-		{
-			s = string.Format(s, args);
-		}
+    public string getStringForKey(string key, params object[] args)
+    {
+        var s = getStringForKey(key);
 
-		return s;
-	}
+        if (args.Length > 0)
+        {
+            s = string.Format(s, args);
+        }
+
+        return s;
+    }
 
     public int getLanguagesAmount()
     {
-		return supportedLanguages.Length;
+        return supportedLanguages.Length;
     }
 
     public Font getFontPerLanguage(LanguageEntry lang)
     {
-    	if(lang.hasCustomFont())
-			return lang.getCustomFont();
+        if (lang.hasCustomFont())
+            return lang.getCustomFont();
 
-    	return defaultFont;	
+        return defaultFont;
     }
 
-	public Font getFontPerCurrentLanguage()
-	{
-		return getFontPerLanguage(currentLanguage);
-	}
-
-	public TMP_FontAsset getTextMeshFontPerLanguage(LanguageEntry lang)
+    public Font getFontPerCurrentLanguage()
     {
-    	if(lang.hasCustomTextMeshFont())
-			return lang.getCustomTextMeshFont();
-
-    	return defaultTextMeshFont;	
+        return getFontPerLanguage(currentLanguage);
     }
 
-	public TMP_FontAsset getTextMeshFontPerCurrentLanguage()
-	{
-		return getTextMeshFontPerLanguage(currentLanguage);
-	}
+    public TMP_FontAsset getTextMeshFontPerLanguage(LanguageEntry lang)
+    {
+        if (lang.hasCustomTextMeshFont())
+            return lang.getCustomTextMeshFont();
 
-	private void setLanguageFromSystemLanguage()
-	{
-		SystemLanguage systemLang = Application.systemLanguage;
+        return defaultTextMeshFont;
+    }
 
-		setLanguage(systemLang);	
-	}
+    public TMP_FontAsset getTextMeshFontPerCurrentLanguage()
+    {
+        return getTextMeshFontPerLanguage(currentLanguage);
+    }
 
-	public void overrideStoredLanguageHandlers(Func<string> retrieveHandler, Action<string> storeHandler)
-	{
-		retrieveSavedUserLanguageHandler = retrieveHandler;
-		storeSavedUserLanguageHandler = storeHandler;
-	}
+    private void setLanguageFromSystemLanguage()
+    {
+        SystemLanguage systemLang = Application.systemLanguage;
 
-	public void resetDefaultStoredLanguageHandlers()
-	{
-		retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
-		storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
-	}
+        setLanguage(systemLang);
+    }
 
-	public void clearLanguageChangedListeners()
-	{
-		OnLanguageChanged = null;
-	}
+    public void overrideStoredLanguageHandlers(Func<string> retrieveHandler, Action<string> storeHandler)
+    {
+        retrieveSavedUserLanguageHandler = retrieveHandler;
+        storeSavedUserLanguageHandler = storeHandler;
+    }
 
-	private void printDebugLog(string message)
-	{
-		if(showLogMessages)
-		{
-			Debug.Log(message);
-		}
-	}
+    public void resetDefaultStoredLanguageHandlers()
+    {
+        retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
+        storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
+    }
+
+    public void clearLanguageChangedListeners()
+    {
+        OnLanguageChanged = null;
+    }
+
+    private void printDebugLog(string message)
+    {
+        if (showLogMessages)
+        {
+            Debug.Log(message);
+        }
+    }
 }
