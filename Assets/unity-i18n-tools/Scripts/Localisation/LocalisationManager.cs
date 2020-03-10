@@ -28,9 +28,9 @@ namespace Himeki.i18n
         [Tooltip("Default Font to use for TextMeshPro text fields.")]
         [SerializeField] private TMP_FontAsset defaultTextMeshFont;
 
-        [Header("Languages")]
-        [Tooltip("List of languages to be supported in the game.")]
-        [SerializeField] private LanguageEntry[] supportedLanguages;
+        [Header("Languages Setup")]
+        [Tooltip("Languages provider to be supported in the game.")]
+        [SerializeField] private LanguagesSetup languagesSetup;
 
         [Header("Debug")]
         [Tooltip("Print Debug log messages in the console - Disable for release builds")]
@@ -68,7 +68,9 @@ namespace Himeki.i18n
                 DontDestroyOnLoad(gameObject);
 
                 if (initialiseOnAwake)
+                {
                     initialise();
+                }
             }
             else if (instance != this)
             {
@@ -80,18 +82,15 @@ namespace Himeki.i18n
         {
             if (!initialised)
             {
-                if (supportedLanguages.Length > 0)
+                if (languagesSetup.getSupportedLanguagesAmount() > 0)
                 {
-                    currentLanguage = supportedLanguages[0];
-                    defaultLanguage = supportedLanguages[0];
+                    defaultLanguage = languagesSetup.getLanguage(0);
+                    currentLanguage = defaultLanguage;
 
                     retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
                     storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
 
-                    foreach (var languageEntry in supportedLanguages)
-                    {
-                        languageEntry.initialise();
-                    }
+                    languagesSetup.warmUp();
 
                     if (storeLanguageOnUserPrefs)
                     {
@@ -138,22 +137,27 @@ namespace Himeki.i18n
 
         public void setLanguage(SystemLanguage lang)
         {
-            for (int i = 0; i < supportedLanguages.Length; i++)
+            var entry = languagesSetup.getLanguage(lang);
+            if(entry != null)
             {
-                if (supportedLanguages[i].getLanguage() == lang)
-                {
-                    setLanguage(supportedLanguages[i]);
-
-                    break;
-                }
+                setLanguage(entry);
+            }
+            else
+            {
+                printDebugLog("Language not supported! System Language: " + lang);
             }
         }
 
         public void setLanguage(int index)
         {
-            if (index >= 0 && index < supportedLanguages.Length)
+            var entry = languagesSetup.getLanguage(index);
+            if(entry != null)
             {
-                setLanguage(supportedLanguages[index]);
+                setLanguage(entry);
+            }
+            else
+            {
+                printDebugLog("Language not supported! Index: " + index);
             }
         }
 
@@ -179,15 +183,7 @@ namespace Himeki.i18n
 
         public bool supportsLanguage(SystemLanguage language)
         {
-            for (int i = 0; i < supportedLanguages.Length; i++)
-            {
-                if (supportedLanguages[i].getLanguage() == language)
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return languagesSetup.supportsLanguage(language);
         }
 
         public LanguageEntry getCurrentLanguage()
@@ -235,7 +231,7 @@ namespace Himeki.i18n
 
         public int getLanguagesAmount()
         {
-            return supportedLanguages.Length;
+            return languagesSetup.getSupportedLanguagesAmount();
         }
 
         public Font getFontPerLanguage(LanguageEntry lang)

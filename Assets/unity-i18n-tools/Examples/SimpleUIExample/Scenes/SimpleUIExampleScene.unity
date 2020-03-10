@@ -688,6 +688,12 @@ PrefabInstance:
       propertyPath: showLogMessages
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 114140879257106836, guid: 2fbb32d73c5c97f4585ae280130322cf,
+        type: 3}
+      propertyPath: languagesSetup
+      value: 
+      objectReference: {fileID: 11400000, guid: d9caa70a877014f18b387e451cf1c503,
+        type: 2}
     - target: {fileID: 4989949924415894, guid: 2fbb32d73c5c97f4585ae280130322cf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1520,7 +1526,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 1
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

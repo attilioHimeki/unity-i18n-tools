@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a78ae5a8a08af4eac9f85feb6ee96b4f, type: 3}
+  m_Name: Languages Setup
+  m_EditorClassIdentifier: 
+  supportedLanguages:
+  - language: 10
+    translationCSVFile: {fileID: 4900000, guid: 610e78a1259f03e4baa38af9c3f548e6,
+      type: 3}
+    customFont: {fileID: 0}
+    customTextMeshFont: {fileID: 0}
+  - language: 21
+    translationCSVFile: {fileID: 4900000, guid: 30dea69b800a4fc47a6086f345591377,
+      type: 3}
+    customFont: {fileID: 0}
+    customTextMeshFont: {fileID: 0}
+  - language: 28
+    translationCSVFile: {fileID: 4900000, guid: 5997c26c86df1fc4bbbe548e60159297,
+      type: 3}
+    customFont: {fileID: 0}
+    customTextMeshFont: {fileID: 0}
