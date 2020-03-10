@@ -82,26 +82,40 @@ namespace Himeki.i18n
         {
             if (!initialised)
             {
-                if (languagesSetup.getSupportedLanguagesAmount() > 0)
+                if(languagesSetup != null)
                 {
-                    defaultLanguage = languagesSetup.getLanguage(0);
-                    currentLanguage = defaultLanguage;
-
-                    retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
-                    storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
-
-                    languagesSetup.warmUp();
-
-                    if (storeLanguageOnUserPrefs)
+                    if (languagesSetup.getSupportedLanguagesAmount() > 0)
                     {
-                        loadSavedUserLang();
-                    }
+                        defaultLanguage = languagesSetup.getDefaultLanguage();
+                        if(defaultLanguage == null)
+                        {
+                            defaultLanguage = languagesSetup.getLanguage(0);
 
-                    initialised = true;
+                            Debug.LogError("The default language defined in the setup cannot be found. Fallback to the first language provided.");
+                        }
+                        
+                        currentLanguage = defaultLanguage;
+
+                        retrieveSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.getLanguageFromPlayerPrefs;
+                        storeSavedUserLanguageHandler = PlayerPrefsStoredLanguageHandlers.saveLanguageOnPlayerPrefs;
+
+                        languagesSetup.warmUp();
+
+                        if (storeLanguageOnUserPrefs)
+                        {
+                            loadSavedUserLang();
+                        }
+
+                        initialised = true;
+                    }
+                    else
+                    {
+                        Debug.LogError("No Languages defined in the Localisation Setup provided, make sure at least one language is supported. Skipping initialisation.");
+                    }
                 }
                 else
                 {
-                    Debug.LogError("No Languages defined in the Localisation Manager, make sure at least one language is supported. Skipping initialisation.");
+                    Debug.LogError("No Languages Setup provided, make sure to create and assign it. Skipping initialisation.");
                 }
             }
         }

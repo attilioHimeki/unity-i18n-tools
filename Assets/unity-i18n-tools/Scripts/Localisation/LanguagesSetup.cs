@@ -8,6 +8,8 @@ namespace Himeki.i18n
     public class LanguagesSetup : ScriptableObject
     {
         [Header("Languages")]
+        [Tooltip("Default Game language.")]
+        [SerializeField] private SystemLanguage defaultLanguage;
         [Tooltip("List of languages to be supported in the game.")]
         [SerializeField] private LanguageEntry[] supportedLanguages;
 
@@ -50,6 +52,11 @@ namespace Himeki.i18n
             }
 
             return null;
+        }
+
+        public LanguageEntry getDefaultLanguage()
+        {
+            return getLanguage(defaultLanguage);
         }
     }
 }

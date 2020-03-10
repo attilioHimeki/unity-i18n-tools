@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78ae5a8a08af4eac9f85feb6ee96b4f, type: 3}
   m_Name: Languages Setup
   m_EditorClassIdentifier: 
+  defaultLanguage: 10
   supportedLanguages:
   - language: 10
     translationCSVFile: {fileID: 4900000, guid: 610e78a1259f03e4baa38af9c3f548e6,
