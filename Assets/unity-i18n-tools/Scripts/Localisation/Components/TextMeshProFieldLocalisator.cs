@@ -1,40 +1,44 @@
 ﻿using UnityEngine;
 using TMPro;
 
-[DisallowMultipleComponent]
-[RequireComponent(typeof(TextMeshProUGUI))]
-public class TextMeshProFieldLocalisator : BaseTextFieldLocalisator 
+namespace Himeki.i18n
 {
 
-	[Header("Fonts")]
-	[SerializeField] private TMP_FontAsset overrideFont;
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(TextMeshProUGUI))]
+    public class TextMeshProFieldLocalisator : BaseTextFieldLocalisator
+    {
 
-	private TextMeshProUGUI meshTextField;
+        [Header("Fonts")]
+        [SerializeField] private TMP_FontAsset overrideFont;
 
-	void Awake()
-	{
-		meshTextField = GetComponent<TextMeshProUGUI>();
-	}
+        private TextMeshProUGUI meshTextField;
 
-	public override void refreshText()
-	{
-		if(!string.IsNullOrEmpty(textKey))
-		{
-			var s = LocalisationManager.instance.getStringForKey(textKey, parameters);
-			meshTextField.text = s;
-		}
-	}
+        void Awake()
+        {
+            meshTextField = GetComponent<TextMeshProUGUI>();
+        }
 
-	public override void refreshFont()
-	{
-		var refreshedFont = (overrideFont != null) ? 
-							overrideFont : 
-							LocalisationManager.instance.getTextMeshFontPerCurrentLanguage();
+        public override void refreshText()
+        {
+            if (!string.IsNullOrEmpty(textKey))
+            {
+                var s = LocalisationManager.instance.getStringForKey(textKey, parameters);
+                meshTextField.text = s;
+            }
+        }
 
-		if(refreshedFont && meshTextField.font != refreshedFont)
-		{
-			meshTextField.font = overrideFont;
-		}
-	}
+        public override void refreshFont()
+        {
+            var refreshedFont = (overrideFont != null) ?
+                                overrideFont :
+                                LocalisationManager.instance.getTextMeshFontPerCurrentLanguage();
 
+            if (refreshedFont && meshTextField.font != refreshedFont)
+            {
+                meshTextField.font = overrideFont;
+            }
+        }
+
+    }
 }

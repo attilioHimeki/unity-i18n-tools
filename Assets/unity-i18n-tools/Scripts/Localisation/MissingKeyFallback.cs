@@ -1,7 +1,10 @@
-public enum MissingKeyFallback 
+namespace Himeki.i18n
 {
-    Empty,
-    ShowKey,
-    ShowErrorString,
-    TryShowingDefaultLangString
+    public enum MissingKeyFallback 
+    {
+        Empty,
+        ShowKey,
+        ShowErrorString,
+        TryShowingDefaultLangString
+    }
 }

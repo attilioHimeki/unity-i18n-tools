@@ -1,38 +1,37 @@
-﻿namespace SimpleUIExample
+﻿
+using UnityEngine;
+using Himeki.i18n;
+
+public class TextFieldTest : MonoBehaviour
 {
-	using UnityEngine;
 
-	public class TextFieldTest : MonoBehaviour 
+	private int languageIndex = 0;
+
+	public void onNextButtonPressed()
 	{
-
-		private int languageIndex = 0;
-
-		public void onNextButtonPressed()
+		if (languageIndex >= LocalisationManager.instance.getLanguagesAmount() - 1)
 		{
-			if(languageIndex >= LocalisationManager.instance.getLanguagesAmount()-1)
-			{
-				languageIndex = 0;
-			}
-			else
-			{
-				languageIndex++;
-			}
-
-			LocalisationManager.instance.setLanguage(languageIndex);
+			languageIndex = 0;
+		}
+		else
+		{
+			languageIndex++;
 		}
 
-		public void onPreviousButtonPressed()
-		{
-			if(languageIndex <= 0)
-			{
-				languageIndex = LocalisationManager.instance.getLanguagesAmount()-1;
-			}
-			else
-			{
-				languageIndex--;
-			}
+		LocalisationManager.instance.setLanguage(languageIndex);
+	}
 
-			LocalisationManager.instance.setLanguage(languageIndex);
+	public void onPreviousButtonPressed()
+	{
+		if (languageIndex <= 0)
+		{
+			languageIndex = LocalisationManager.instance.getLanguagesAmount() - 1;
 		}
+		else
+		{
+			languageIndex--;
+		}
+
+		LocalisationManager.instance.setLanguage(languageIndex);
 	}
 }

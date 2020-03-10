@@ -1477,8 +1477,8 @@ GameObject:
   - component: {fileID: 1413585445}
   - component: {fileID: 1413585444}
   - component: {fileID: 1413585443}
-  - component: {fileID: 1413585446}
   - component: {fileID: 1413585447}
+  - component: {fileID: 1413585446}
   m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
@@ -1520,7 +1520,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0

@@ -1,50 +1,53 @@
 using UnityEngine;
 
-public class BaseTextFieldLocalisator : MonoBehaviour
+namespace Himeki.i18n
 {
-	[SerializeField] protected string textKey;
-	
-	[Header("Parameters")]
-	[SerializeField] protected string[] parameters;
+    public class BaseTextFieldLocalisator : MonoBehaviour
+    {
+        [SerializeField] protected string textKey;
 
-	void OnEnable () 
-	{
-		LocalisationManager.instance.OnLanguageChanged += onLanguageChanged;
-		
-		refresh();
-	}
-    void OnDisable()
-	{
-		LocalisationManager.instance.OnLanguageChanged -= onLanguageChanged;
-	}
-	void OnDestroy()
-	{
-		LocalisationManager.instance.OnLanguageChanged -= onLanguageChanged;
-	}
+        [Header("Parameters")]
+        [SerializeField] protected string[] parameters;
 
-	private void onLanguageChanged()
-	{
-		refresh();
-	}
+        void OnEnable()
+        {
+            LocalisationManager.instance.OnLanguageChanged += onLanguageChanged;
 
-    public void refresh()
-	{
-		refreshText();
-		refreshFont();
-	}
+            refresh();
+        }
+        void OnDisable()
+        {
+            LocalisationManager.instance.OnLanguageChanged -= onLanguageChanged;
+        }
+        void OnDestroy()
+        {
+            LocalisationManager.instance.OnLanguageChanged -= onLanguageChanged;
+        }
 
-    public void setText(string key, params string[] args)
-	{
-		textKey = key;
-		parameters = args;
+        private void onLanguageChanged()
+        {
+            refresh();
+        }
 
-		refreshText();
-	}
+        public void refresh()
+        {
+            refreshText();
+            refreshFont();
+        }
 
-    public virtual void refreshText()
-	{}
+        public void setText(string key, params string[] args)
+        {
+            textKey = key;
+            parameters = args;
 
-	public virtual void refreshFont()
-	{}
+            refreshText();
+        }
 
+        public virtual void refreshText()
+        { }
+
+        public virtual void refreshFont()
+        { }
+
+    }
 }

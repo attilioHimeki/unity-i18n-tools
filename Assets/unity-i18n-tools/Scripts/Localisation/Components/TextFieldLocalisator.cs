@@ -1,43 +1,46 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-[DisallowMultipleComponent]
-[RequireComponent(typeof(Text))]
-public class TextFieldLocalisator : BaseTextFieldLocalisator
+namespace Himeki.i18n
 {
 
-    [Header("Fonts")]
-    [SerializeField] private Font overrideFont;
-
-    private Text textField;
-
-    void Awake()
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(Text))]
+    public class TextFieldLocalisator : BaseTextFieldLocalisator
     {
-        textField = GetComponent<Text>();
-    }
 
-    public override void refreshText()
-    {
-        if (!string.IsNullOrEmpty(textKey))
+        [Header("Fonts")]
+        [SerializeField] private Font overrideFont;
+
+        private Text textField;
+
+        void Awake()
         {
-            var s = LocalisationManager.instance.getStringForKey(textKey, parameters);
-
-            textField.text = s;
+            textField = GetComponent<Text>();
         }
-    }
 
-    public override void refreshFont()
-    {
-        var refreshedFont = (overrideFont != null) ?
-                            overrideFont :
-                            LocalisationManager.instance.getFontPerCurrentLanguage();
-
-        if (refreshedFont && textField.font != refreshedFont)
+        public override void refreshText()
         {
-            textField.font = overrideFont;
+            if (!string.IsNullOrEmpty(textKey))
+            {
+                var s = LocalisationManager.instance.getStringForKey(textKey, parameters);
+
+                textField.text = s;
+            }
         }
+
+        public override void refreshFont()
+        {
+            var refreshedFont = (overrideFont != null) ?
+                                overrideFont :
+                                LocalisationManager.instance.getFontPerCurrentLanguage();
+
+            if (refreshedFont && textField.font != refreshedFont)
+            {
+                textField.font = overrideFont;
+            }
+        }
+
     }
-
-
 
 }
