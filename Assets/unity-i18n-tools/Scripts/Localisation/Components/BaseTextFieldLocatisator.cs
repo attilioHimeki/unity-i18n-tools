@@ -1,13 +1,24 @@
 using UnityEngine;
+using System.Linq;
 
 namespace Himeki.i18n
 {
     public class BaseTextFieldLocalisator : MonoBehaviour
     {
-        [SerializeField] protected string textKey;
+        [System.Serializable]
+        public struct PlatformKeyOverride
+        {
+            public RuntimePlatform platform;
+            public string textKey;
+        }
+
+        [SerializeField] private string textKey;
+        [SerializeField] private PlatformKeyOverride[] textKeyOverrides;
 
         [Header("Parameters")]
-        [SerializeField] protected string[] parameters;
+        [SerializeField] private string[] parameters;
+
+        private bool ignorePlatformOverrides = false;
 
         void OnEnable()
         {
@@ -35,12 +46,30 @@ namespace Himeki.i18n
             refreshFont();
         }
 
-        public void setText(string key, params string[] args)
+        public void setText(string key, bool ignoreOverrides, params string[] args)
         {
             textKey = key;
             parameters = args;
+            ignorePlatformOverrides = ignoreOverrides;
 
             refreshText();
+        }
+
+        public string getLocalisedText()
+        {
+            var localisedKey = textKey;
+
+            if(!ignorePlatformOverrides && textKeyOverrides.Length > 0)
+            {
+                var keyOverride = textKeyOverrides.FirstOrDefault(o => o.platform == Application.platform);
+
+                if (!string.IsNullOrEmpty(keyOverride.textKey))
+                {
+                    localisedKey = keyOverride.textKey;
+                }
+            }
+
+            return LocalisationManager.instance.getStringForKey(localisedKey, parameters);
         }
 
         public virtual void refreshText()

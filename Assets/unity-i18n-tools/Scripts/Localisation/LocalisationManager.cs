@@ -35,6 +35,7 @@ namespace Himeki.i18n
         [Header("Debug")]
         [Tooltip("Print Debug log messages in the console - Disable for release builds")]
         [SerializeField] private bool showLogMessages = false;
+        private static ILogger logger = Debug.unityLogger;
 
         private LanguageEntry currentLanguage;
         private LanguageEntry defaultLanguage;
@@ -91,7 +92,7 @@ namespace Himeki.i18n
                         {
                             defaultLanguage = languagesSetup.getLanguage(0);
 
-                            Debug.LogError("The default language defined in the setup cannot be found. Fallback to the first language provided.");
+                            printDebugLog("The default language defined in the setup cannot be found. Fallback to the first language provided.", LogType.Error);
                         }
                         
                         currentLanguage = defaultLanguage;
@@ -110,12 +111,12 @@ namespace Himeki.i18n
                     }
                     else
                     {
-                        Debug.LogError("No Languages defined in the Localisation Setup provided, make sure at least one language is supported. Skipping initialisation.");
+                        printDebugLog("No Languages defined in the Localisation Setup provided, make sure at least one language is supported. Skipping initialisation.", LogType.Error);
                     }
                 }
                 else
                 {
-                    Debug.LogError("No Languages Setup provided, make sure to create and assign it. Skipping initialisation.");
+                    printDebugLog("No Languages Setup provided, make sure to create and assign it. Skipping initialisation.", LogType.Error);
                 }
             }
         }
@@ -128,18 +129,18 @@ namespace Himeki.i18n
 
                 if (!string.IsNullOrEmpty(languageCode))
                 {
-                    printDebugLog("Loading saved language from User Prefs: " + languageCode);
+                    printDebugLog("Loading saved language from User Prefs: " + languageCode, LogType.Log);
 
                     setLanguage(languageCode);
                 }
                 else
                 {
-                    printDebugLog("No Saved user language found");
+                    printDebugLog("No Saved user language found", LogType.Log);
                 }
             }
             else
             {
-                printDebugLog("No Saved user language function assigned!");
+                printDebugLog("No Saved user language function assigned", LogType.Log);
             }
         }
 
@@ -158,7 +159,7 @@ namespace Himeki.i18n
             }
             else
             {
-                printDebugLog("Language not supported! System Language: " + lang);
+                printDebugLog("Language not supported! System Language: " + lang, LogType.Error);
             }
         }
 
@@ -171,13 +172,13 @@ namespace Himeki.i18n
             }
             else
             {
-                printDebugLog("Language not supported! Index: " + index);
+                printDebugLog("Language not supported! Index: " + index, LogType.Error);
             }
         }
 
         public void setLanguage(LanguageEntry entry)
         {
-            printDebugLog("Settings language to " + entry.getLanguage());
+            printDebugLog("Settings language to " + entry.getLanguage(), LogType.Log);
 
             currentLanguage = entry;
 
@@ -186,7 +187,7 @@ namespace Himeki.i18n
                 if (storeSavedUserLanguageHandler != null)
                 {
                     var isoCode = LanguageUtils.getISOCodeFromLanguage(entry.getLanguage());
-                    printDebugLog("Storing saved language in User Prefs: " + isoCode);
+                    printDebugLog("Storing saved language in User Prefs: " + isoCode, LogType.Log);
                     storeSavedUserLanguageHandler.Invoke(isoCode);
                 }
             }
@@ -213,7 +214,7 @@ namespace Himeki.i18n
             }
             else
             {
-                printDebugLog("Can't find string for key: " + key);
+                printDebugLog("Can't find string for key: " + key, LogType.Warning);
 
                 switch (missingKeyFallback)
                 {
@@ -298,11 +299,11 @@ namespace Himeki.i18n
             OnLanguageChanged = null;
         }
 
-        private void printDebugLog(string message)
+        private void printDebugLog(string message, LogType logType = LogType.Log)
         {
             if (showLogMessages)
             {
-                Debug.Log(message);
+                logger.Log(logType, message);
             }
         }
     }

@@ -9,13 +9,10 @@ public class TextFieldTest : MonoBehaviour
 
 	public void onNextButtonPressed()
 	{
-		if (languageIndex >= LocalisationManager.instance.getLanguagesAmount() - 1)
+		languageIndex++;
+		if (languageIndex > LocalisationManager.instance.getLanguagesAmount() - 1)
 		{
 			languageIndex = 0;
-		}
-		else
-		{
-			languageIndex++;
 		}
 
 		LocalisationManager.instance.setLanguage(languageIndex);
@@ -23,13 +20,10 @@ public class TextFieldTest : MonoBehaviour
 
 	public void onPreviousButtonPressed()
 	{
-		if (languageIndex <= 0)
+		languageIndex--;
+		if (languageIndex < 0)
 		{
 			languageIndex = LocalisationManager.instance.getLanguagesAmount() - 1;
-		}
-		else
-		{
-			languageIndex--;
 		}
 
 		LocalisationManager.instance.setLanguage(languageIndex);

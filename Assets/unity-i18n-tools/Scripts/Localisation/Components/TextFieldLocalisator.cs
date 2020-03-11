@@ -21,12 +21,7 @@ namespace Himeki.i18n
 
         public override void refreshText()
         {
-            if (!string.IsNullOrEmpty(textKey))
-            {
-                var s = LocalisationManager.instance.getStringForKey(textKey, parameters);
-
-                textField.text = s;
-            }
+            textField.text = getLocalisedText();
         }
 
         public override void refreshFont()
