@@ -26,6 +26,11 @@ namespace Himeki.i18n
             return supportedLanguages.Length;
         }
 
+        public SystemLanguage[] getSupportedLanguages()
+        {
+            return supportedLanguages.Select(entry => entry.getLanguage()).ToArray();
+        }
+
         public bool supportsLanguage(SystemLanguage lang)
         {
             return supportedLanguages.Any(entry => entry.getLanguage() == lang);

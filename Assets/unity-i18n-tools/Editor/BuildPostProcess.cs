@@ -11,38 +11,53 @@ namespace Himeki.i18n
     public static class BuildPostProcess
     {
         /// <summary>
-        /// Add languages that you intend to support on iTunes Connect.
+        /// Populates CFBundleLocalizations with languages that you intend to support on iTunes Connect
         /// </summary>
-        private static readonly string[] supportedLanguages =
-        {
-            LanguageIsoCode.EN
-            // Replace with your supported languages here
-        };
-
-
         [PostProcessBuildAttribute]
         static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
         {
             if (target == BuildTarget.iOS)
             {
 #if UNITY_IOS
-                var pListPath = Path.Combine(pathToBuiltProject, "Info.plist");
-                var pList = new PlistDocument();
-                pList.ReadFromFile(pListPath);
-
-                var root = pList.root;
-
-                // Adding supported languages to XCode project
-                if (supportedLanguages.Length > 0)
+                string[] languagesSetupGuiIDs = AssetDatabase.FindAssets("t:LanguagesSetup");
+                if (languagesSetupGuiIDs.Length < 1)
                 {
-                    PlistElementArray languages = root.CreateArray("CFBundleLocalizations");
-                    foreach (var l in supportedLanguages)
+                    UnityEngine.Debug.LogWarning("No Language Setup asset found, skipping populating CFBundleLocalizations");
+                }
+                else if (languagesSetupGuiIDs.Length > 1)
+                {
+                    UnityEngine.Debug.LogWarning("More than one Language Setup asset found in the project. Make sure only one is present in your Assets folder. Skipping populating CFBundleLocalizations");
+                }
+                else
+                {
+                    var path = AssetDatabase.GUIDToAssetPath(languagesSetupGuiIDs[0]);
+                    LanguagesSetup languagesSetup = (LanguagesSetup)AssetDatabase.LoadAssetAtPath(path, typeof(LanguagesSetup));
+                    var supportedLanguages = languagesSetup.getSupportedLanguages();
+
+                    UnityEngine.Debug.LogFormat("Populating CFBundleLocalizations with Language Setup asset found at: {0}", path);
+
+                    // Adding supported languages to CFBundleLocalizations in the XCode project
+                    if (supportedLanguages.Length > 0)
                     {
-                        languages.AddString(l);
+                        var pListPath = Path.Combine(pathToBuiltProject, "Info.plist");
+                        var pList = new PlistDocument();
+                        pList.ReadFromFile(pListPath);
+                        var root = pList.root;
+
+                        PlistElementArray languages = root.CreateArray("CFBundleLocalizations");
+                        foreach (var l in supportedLanguages)
+                        {
+                            var isoCode = LanguageUtils.getISOCodeFromLanguage(l);
+                            languages.AddString(isoCode);
+                        }
+                        
+                        pList.WriteToFile(pListPath);
+                    }
+                    else
+                    {
+                        UnityEngine.Debug.LogWarning("No languages found in current Languages Setup asset, skipping populating CFBundleLocalizations");
                     }
                 }
-
-                pList.WriteToFile(pListPath);
 #endif
             }
         }
