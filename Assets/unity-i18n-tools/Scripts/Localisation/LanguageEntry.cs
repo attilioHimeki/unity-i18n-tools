@@ -26,7 +26,7 @@ namespace Himeki.i18n
         {
             if (translationCSVFile != null)
             {
-                translationDict = CSVUtils.parseLocalisationFile(translationCSVFile.text);
+                translationDict = CSVParser.parseLocalisationFile(translationCSVFile.text);
             }
             else
             {
