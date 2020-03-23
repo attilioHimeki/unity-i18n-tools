@@ -28,17 +28,17 @@ namespace Himeki.i18n
             return result;
         }
 
-        public static Dictionary<int, string[]> parseCSVFile(string csvText)
+        public static List<string[]> parseCSVFile(string csvText)
         {
             string[] lines = csvText.Split('\n');
             int numLines = lines.Length;
 
-            var result = new Dictionary<int, string[]>(numLines);
+            var result = new List<string[]>(numLines);
 
             for (int i = 0; i < numLines; i++)
             {
                 string[] row = splitCsvLine(lines[i]);
-                result[i] = row;
+                result.Add(row);
             }
 
             return result;
