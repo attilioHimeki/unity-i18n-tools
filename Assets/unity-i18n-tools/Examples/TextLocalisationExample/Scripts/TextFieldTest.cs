@@ -1,10 +1,13 @@
 ﻿
 using UnityEngine;
 using Himeki.i18n;
+using TMPro;
 
 public class TextFieldTest : MonoBehaviour
 {
 
+	public TextMeshProUGUI languageLabel;
+	
 	private int languageIndex = 0;
 
 	public void onNextButtonPressed()
@@ -15,7 +18,7 @@ public class TextFieldTest : MonoBehaviour
 			languageIndex = 0;
 		}
 
-		LocalisationManager.instance.setLanguage(languageIndex);
+		setLanguage(languageIndex);
 	}
 
 	public void onPreviousButtonPressed()
@@ -26,6 +29,13 @@ public class TextFieldTest : MonoBehaviour
 			languageIndex = LocalisationManager.instance.getLanguagesAmount() - 1;
 		}
 
-		LocalisationManager.instance.setLanguage(languageIndex);
+		setLanguage(languageIndex);
+	}
+
+	private void setLanguage(int index)
+	{
+		LocalisationManager.instance.setLanguage(index);
+
+		languageLabel.text = LocalisationManager.instance.getCurrentLanguage().getLanguage().ToString();
 	}
 }
