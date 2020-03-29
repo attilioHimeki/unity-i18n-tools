@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Himeki.i18n
 {
-    public class BaseTextFieldLocalisator : MonoBehaviour
+    public abstract class BaseTextFieldLocalisator : MonoBehaviour
     {
         [System.Serializable]
         public struct PlatformKeyOverride
@@ -12,11 +12,11 @@ namespace Himeki.i18n
             public string textKey;
         }
 
-        [SerializeField] private string textKey;
-        [SerializeField] private PlatformKeyOverride[] textKeyOverrides;
+        [SerializeField] protected string textKey;
+        [SerializeField] protected PlatformKeyOverride[] textKeyOverrides;
 
         [Header("Parameters")]
-        [SerializeField] private string[] parameters;
+        [SerializeField] protected string[] parameters;
 
         private bool ignorePlatformOverrides = false;
 
