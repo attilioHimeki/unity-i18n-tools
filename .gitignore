@@ -1,5 +1,6 @@
 *.csproj
-.vscode/settings.json
+.vscode/*
+.vs/*
 Assets/TextMesh Pro
 Library
 Logs

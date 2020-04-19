@@ -44,7 +44,7 @@ namespace Himeki.i18n
 
         public string getStringForKey(string key)
         {
-            string result = "";
+            string result;
             translationDict.TryGetValue(key, out result);
             return result;
         }

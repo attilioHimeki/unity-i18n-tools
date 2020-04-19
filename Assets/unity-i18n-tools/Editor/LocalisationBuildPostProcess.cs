@@ -8,12 +8,12 @@ using System.IO;
 
 namespace Himeki.i18n
 {
-    public static class BuildPostProcess
+    public static class LocalisationBuildPostProcess
     {
         /// <summary>
         /// Populates CFBundleLocalizations with languages that you intend to support on iTunes Connect
         /// </summary>
-        [PostProcessBuildAttribute]
+        [PostProcessBuild]
         static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
         {
             if (target == BuildTarget.iOS)
