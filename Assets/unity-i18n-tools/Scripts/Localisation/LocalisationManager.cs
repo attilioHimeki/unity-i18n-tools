@@ -206,6 +206,11 @@ namespace Himeki.i18n
             return currentLanguage;
         }
 
+        public int getLanguageIndex(SystemLanguage language)
+        {
+            return languagesSetup.getLanguageIndex(language);
+        }
+
         public string getStringForKey(string key)
         {
             if (currentLanguage.hasStringForKey(key))

@@ -6,9 +6,16 @@ using TMPro;
 public class TextFieldTest : MonoBehaviour
 {
 
-	public TextMeshProUGUI languageLabel;
-	
+	[SerializeField] private TextMeshProUGUI languageLabel;
 	private int languageIndex = 0;
+
+	void OnEnable()
+	{
+		var currentLanguage = LocalisationManager.instance.getCurrentLanguage().getLanguage();
+		languageIndex = LocalisationManager.instance.getLanguageIndex(currentLanguage);
+
+		languageLabel.text = currentLanguage.ToString();
+	}
 
 	public void onNextButtonPressed()
 	{

@@ -46,6 +46,19 @@ namespace Himeki.i18n
             return null;
         }
 
+        public int getLanguageIndex(SystemLanguage lang)
+        {
+            for (int i = 0; i < supportedLanguages.Length; i++)
+            {
+                if (supportedLanguages[i].getLanguage() == lang)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
         public LanguageEntry getLanguage(SystemLanguage lang)
         {
             for (int i = 0; i < supportedLanguages.Length; i++)
